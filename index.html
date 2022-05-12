@@ -5,18 +5,55 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="./Utils/utils.js"></script>
+
+    <script src="./node_modules/three/build/three.js"></script>
+    <script src="./node_modules/three/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="./node_modules/three/examples/js/postprocessing/Pass.js"></script>
+    <script src="./node_modules/three/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="./node_modules/three/examples/js/shaders/SMAAShader.js"></script>
+    <script src="./node_modules/three/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="./node_modules/three/examples/js/shaders/CopyShader.js"></script>
+    <script src="./node_modules/three/examples/js/postprocessing/RenderPass.js"></script>
+    <!-- <script src="./node_modules/three/examples/js/postprocessing/ShaderPass.js"></script> -->
+    <script src="./node_modules/three/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="./node_modules/three/examples/js/postprocessing/SMAAPass.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous">
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+
+    <script src="handController.js"></script>
     <script src="app.js" type="module"></script>
     <style>
         body {
             margin: 0;
             overflow: hidden;
         }
+
+        #three {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        #debug_canvas {
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            bottom: 0;
+        }
     </style>
     <title>Document</title>
 </head>
 
 <body>
-
+    <video id="input_video"></video>
+    <canvas id="debug_canvas" width=380px height=240px></canvas>
 </body>
 
 </html>

@@ -1,6 +1,8 @@
 /* precision highp float; */
 uniform vec2 u_resolution;
 uniform float u_time;
+uniform float power;
+uniform float angle;
 
 #define QUARTER_PI 0.78539813397
 #define HALF_PI 1.570796267
@@ -8,7 +10,7 @@ uniform float u_time;
 #define TWO_PI 6.2831852
 #define MAX_STEPS 128
 #define MAX_DIST 100.
-#define SURFACE_DIST .001
+#define SURFACE_DIST .0007
 
 float dist(vec3 p) {
     vec4 s = vec4(0., 1., 6. + sin(u_time) * 3., 1.);
@@ -23,7 +25,8 @@ float dist(vec3 p) {
 float mandeldist(vec3 p) {
     vec3 z = p;
     float dr = 1.;
-    float pwr = 2. + (sin(u_time * .1) + 1.) / 2. * 6.;
+    /* float pwr = 2. + (sin(u_time * .1) + 1.) / 2. * 6.; */
+    float pwr = power;
     float r = 0.;
 
     for(int i = 0; i < 64; i++) {
@@ -60,7 +63,7 @@ vec4 RayMarch(vec3 ro, vec3 rd) {
     vec3 p;
     for(int i = 0; i < MAX_STEPS; i++) {
         p = ro + rd * dO;
-        float ds = dist(p);
+        float ds = mandeldist(p);
         dO += ds * float(i) / float(MAX_STEPS);
         if(dO > MAX_DIST || ds < SURFACE_DIST)
             break;
@@ -109,8 +112,10 @@ vec3 palette(float t) {
 void main() {
     vec2 uv = (gl_FragCoord.xy - .5 * u_resolution) / u_resolution.y;
     /* vec3 ro = vec3(0., 0., -4.); */
-    vec3 ro = vec3(sin(u_time * .1) * 3., 0., cos(u_time * .1) * 3.);
-    vec3 rd = getRayDirection(uv, ro, -u_time * .1 + PI);
+    /* vec3 ro = vec3(sin(u_time * .1) * 3., 0., cos(u_time * .1) * 3.); */
+    vec3 ro = vec3(sin(angle) * 3., 0., cos(angle) * 3.);
+    /* vec3 rd = getRayDirection(uv, ro, -u_time * .1 + PI); */
+    vec3 rd = getRayDirection(uv, ro, -angle + PI);
 
     vec4 scene = RayMarch(ro, rd);
     float d = scene.x;
@@ -118,9 +123,9 @@ void main() {
     d /= 12.;
 
     /* gl_FragColor = vec4(mix(light, dark, clamp(d, 0., 1.)), 1.); */
-    /* gl_FragColor = vec4(scene.yzw, 1.); */
+    gl_FragColor = vec4(scene.yzw, 1.);
 
     /* gl_FragColor *= mandelAO(ro, rd); */
 
-    gl_FragColor = vec4(u_resolution / 10., 0., 1.);
+    /* gl_FragColor = vec4(u_resolution / 10., 0., 1.); */
 }
