@@ -14,10 +14,10 @@ class App {
             new THREE.ShaderMaterial({
                 fragmentShader: shadermat,
                 uniforms: {
-                    resolution: {
+                    u_resolution: {
                         value: new THREE.Vector2()
                     },
-                    time: {
+                    u_time: {
                         value: 0
                     }
                 }
@@ -34,14 +34,14 @@ class App {
     render() {
         requestAnimationFrame(this.render.bind(this))
         this.renderer.render(this.scene, this.camera)
-        this.plane.material.uniforms.time.value = this.clock.getElapsedTime()
+        this.plane.material.uniforms.u_time.value = this.clock.getElapsedTime()
     }
 
     setSize() {
         this.renderer.setSize(innerWidth, innerHeight);
         this.renderer.setPixelRatio(devicePixelRatio)
-        this.plane.material.uniforms.resolution.x = innerWidth
-        this.plane.material.uniforms.resolution.y = innerHeight
+        this.plane.material.uniforms.u_resolution.x = innerWidth
+        this.plane.material.uniforms.u_resolution.y = innerHeight
     }
 }
 
