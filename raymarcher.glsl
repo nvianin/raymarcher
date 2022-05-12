@@ -86,7 +86,7 @@ float mandelAO(vec3 ro, vec3 rd) {
     for(int i = 0; i < steps; i++) {
         float hr = .01 + .02 * float(i) / float(steps);
         vec3 pos = ro + rd * hr;
-        float dd = mandeldist(pos);
+        float dd = dist(pos);
         /* float ao = clamp(-(dd - hr), 0., 1.);
         tally += ao * sca * vec4(1.); */
         occ += -(dd - hr) * sca;
@@ -108,19 +108,19 @@ vec3 palette(float t) {
 
 void main() {
     vec2 uv = (gl_FragCoord.xy - .5 * u_resolution) / u_resolution.y;
-    vec3 ro = vec3(0., 0., -4.);
-    /* vec3 ro = vec3(sin(u_time * .1) * 3., 0., cos(u_time * .1) * 3.); */
+    /* vec3 ro = vec3(0., 0., -4.); */
+    vec3 ro = vec3(sin(u_time * .1) * 3., 0., cos(u_time * .1) * 3.);
     vec3 rd = getRayDirection(uv, ro, -u_time * .1 + PI);
 
     vec4 scene = RayMarch(ro, rd);
     float d = scene.x;
     /* d *= mandelAO(ro, rd) * 5.; */
-    d /= 64.;
+    d /= 12.;
 
     /* gl_FragColor = vec4(mix(light, dark, clamp(d, 0., 1.)), 1.); */
-    gl_FragColor = vec4(scene.yzw, 1.);
+    /* gl_FragColor = vec4(scene.yzw, 1.); */
 
     /* gl_FragColor *= mandelAO(ro, rd); */
 
-    /* gl_FragColor = vec4(uv, 0., 1.); */
+    gl_FragColor = vec4(u_resolution / 10., 0., 1.);
 }
