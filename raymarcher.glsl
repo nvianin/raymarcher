@@ -61,7 +61,7 @@ float RayMarch(vec3 ro, vec3 rd) {
 void main() {
     vec2 resolution = u_resolution;
     vec2 uv = (gl_FragCoord.xy - .5 * resolution) / resolution.y;
-    vec3 ro = vec3(0., 0., -1.);
+    vec3 ro = vec3(0., 0., -3.);
     vec3 rd = normalize(vec3(uv.x, uv.y, 1));
     float d = RayMarch(ro, rd);
     d /= 10.;
