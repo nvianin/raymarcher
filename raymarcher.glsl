@@ -19,13 +19,14 @@ float dist(vec3 p) {
 }
 
 float mandeldist(vec3 p) {
+    vec3 z = p;
     float dr = 1.;
-    float pwr = 1.2;
+    float pwr = 8.;
     float r = 0.;
 
-    for(int i = 0; i < 50; i++) {
-        r = length(p);
-        if(r > 10.)
+    for(int i = 0; i < 64; i++) {
+        r = length(z);
+        if(r > 1.5)
             break;
 
         float theta = acos(p.z / r);
@@ -36,8 +37,8 @@ float mandeldist(vec3 p) {
         theta *= pwr;
         phi *= pwr;
 
-        vec3 point = zr * vec3(sin(theta) * cos(phi), sin(phi) * sin(theta), cos(theta));
-        point += p;
+        z = zr * vec3(sin(theta) * cos(phi), sin(phi) * sin(theta), cos(theta));
+        z += p;
 
         /* return distance(p, point); */
         return .5 * log(r) * r / dr;
@@ -62,7 +63,7 @@ void main() {
     vec2 resolution = u_resolution;
     vec2 uv = (gl_FragCoord.xy - .5 * resolution) / resolution.y;
     vec3 ro = vec3(0., 0., -3.);
-    vec3 rd = normalize(vec3(uv.x, uv.y, 1));
+    vec3 rd = normalize(vec3(uv, 1));
     float d = RayMarch(ro, rd);
     d /= 10.;
     gl_FragColor = vec4(vec3(d), 1.);
