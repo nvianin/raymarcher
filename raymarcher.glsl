@@ -1,9 +1,15 @@
 /* precision highp float; */
 uniform vec2 u_resolution;
 uniform float u_time;
-uniform float power;
-uniform float angle;
 uniform float pixelRatio;
+
+uniform float angle;
+uniform float dist;
+
+uniform float power;
+uniform float middle_f;
+uniform float ring_f;
+uniform float little_f;
 
 #define QUARTER_PI 0.78539813397
 #define HALF_PI 1.570796267
@@ -13,7 +19,7 @@ uniform float pixelRatio;
 #define MAX_DIST 100.
 #define SURFACE_DIST .0007
 
-float dist(vec3 p) {
+float scene_dist(vec3 p) {
     vec4 s = vec4(0., 1., 6. + sin(u_time) * 3., 1.);
     float sphereDist = length(p - s.xyz) - s.w;
     float planeDist = p.y;
@@ -43,7 +49,7 @@ float mandeldist(vec3 p) {
         theta *= pwr;
         phi *= pwr;
 
-        z = zr * vec3(sin(theta) * cos(phi), sin(phi) * sin(theta), cos(theta));
+        z = zr * vec3(sin(theta + middle_f) * cos(phi + ring_f), sin(phi + ring_f) * sin(theta + little_f), cos(theta + little_f));
         z += p;
 
     }
@@ -90,7 +96,7 @@ float mandelAO(vec3 ro, vec3 rd) {
     for(int i = 0; i < steps; i++) {
         float hr = .01 + .02 * float(i) / float(steps);
         vec3 pos = ro + rd * hr;
-        float dd = dist(pos);
+        float dd = mandeldist(pos);
         /* float ao = clamp(-(dd - hr), 0., 1.);
         tally += ao * sca * vec4(1.); */
         occ += -(dd - hr) * sca;
@@ -111,12 +117,14 @@ vec3 palette(float t) {
 }
 
 void main() {
+    float t = u_time / 10.;
+
     vec2 uv = (gl_FragCoord.xy - (pixelRatio / 2.) * u_resolution) / u_resolution.y;
     /* vec3 ro = vec3(0., 0., -4.); */
     /* vec3 ro = vec3(sin(u_time * .1) * 3., 0., cos(u_time * .1) * 3.); */
-    vec3 ro = vec3(sin(angle) * 3., 0., cos(angle) * 3.);
+    vec3 ro = vec3(sin(angle + t) * 2.5 * dist, 0., cos(angle + t) * 2.5 * dist);
     /* vec3 rd = getRayDirection(uv, ro, -u_time * .1 + PI); */
-    vec3 rd = getRayDirection(uv, ro, -angle + PI);
+    vec3 rd = getRayDirection(uv, ro, -angle - t + PI);
 
     vec4 scene = RayMarch(ro, rd);
     float d = scene.x;

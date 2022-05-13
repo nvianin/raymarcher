@@ -28,8 +28,20 @@ class App {
                     angle: {
                         value: 0
                     },
+                    dist: {
+                        value: 1
+                    },
                     pixelRatio: {
                         value: devicePixelRatio
+                    },
+                    middle_f: {
+                        value: 0
+                    },
+                    ring_f: {
+                        value: 0
+                    },
+                    little_f: {
+                        value: 0
                     }
                 }
             })
@@ -72,8 +84,14 @@ class App {
 
         if (this.handController) {
             this.handController.update(dt)
-            this.plane.material.uniforms.angle.value = -(this.handController.angle + Math.PI / 1.2) * 2
-            this.plane.material.uniforms.power.value = this.handController.power * 100
+            this.plane.material.uniforms.angle.value = -(this.handController.angle + 2.2) * 2
+            this.plane.material.uniforms.power.value = this.handController.power
+
+            this.plane.material.uniforms.middle_f.value = this.handController.middle * 40;
+            this.plane.material.uniforms.ring_f.value = this.handController.ring * 40;
+            this.plane.material.uniforms.little_f.value = this.handController.little * 40;
+
+            this.plane.material.uniforms.dist.value = 1.5 - this.handController.dist * 2
         }
     }
 
