@@ -15,6 +15,7 @@ class HandController {
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5
         })
+        log("Mediapipe loaded")
         this.hands.onResults(this.onResults.bind(this))
 
         this.camera = new Camera(this.video, {
@@ -58,6 +59,9 @@ class HandController {
 
         this.distanceLerper = new Math.PowerLerper(0, 0, 1)
 
+
+        this.draw_debug = true;
+
     }
 
     update(dt) {
@@ -71,23 +75,27 @@ class HandController {
     }
 
     onResults(results) {
-        /* this.ctx.save();
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.drawImage(results.image, 0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.restore(); */
+        if (this.draw_debug) {
+            this.ctx.save();
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.drawImage(results.image, 0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.restore();
+        }
 
         if (results.multiHandLandmarks.length > 0) {
             let landmarks = results.multiHandLandmarks[0]
             /* console.log(landmarks) */
 
-            /*  drawConnectors(this.ctx, landmarks, HAND_CONNECTIONS, {
-                 color: '#00FF00',
-                 lineWidth: 2
-             });
-             drawLandmarks(this.ctx, landmarks, {
-                 color: '#FF0000',
-                 lineWidth: .3
-             }); */
+            if (this.draw_debug) {
+                drawConnectors(this.ctx, landmarks, HAND_CONNECTIONS, {
+                    color: '#00FF00',
+                    lineWidth: 2
+                });
+                drawLandmarks(this.ctx, landmarks, {
+                    color: '#FF0000',
+                    lineWidth: .3
+                });
+            }
 
 
             landmarks = results.multiHandWorldLandmarks[0]
