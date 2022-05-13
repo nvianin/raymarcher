@@ -110,6 +110,6 @@ class App {
 }
 
 window.addEventListener("load", async () => {
-    const shadermat = await (await fetch("./raymarcher.glsl")).text()
+    const shadermat = await (await fetch("./raymarcher/raymarcher.glsl")).text()
     window.app = new App(shadermat);
 })
