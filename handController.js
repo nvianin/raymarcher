@@ -46,14 +46,14 @@ class HandController {
         this.angle = this.targetAngle = -2.1;
         this.power = this.targetPower = 0.17;
 
-        this.angleLerper = new Math.SmoothDamper(this.angle);
-        this.powerLerper = new Math.SmoothDamper(this.power);
+        this.angleLerper = new Math.PowerLerper(this.angle, this.angle, .2);
+        this.powerLerper = new Math.PowerLerper(this.power, this.power, .2);
 
     }
 
     update(dt) {
-        this.angle = this.angleLerper.update()
-        this.power = this.powerLerper.update()
+        this.angle = this.angleLerper.update(dt)
+        this.power = this.powerLerper.update(dt)
 
 
     }
@@ -79,8 +79,8 @@ class HandController {
 
 
             landmarks = results.multiHandWorldLandmarks[0]
-            this.targetAngle = Math.atan2(landmarks[17].x - landmarks[0].x, landmarks[17].z - landmarks[0].z)
-            this.targetPower = new THREE.Vector3(landmarks[4].x, landmarks[4].y, landmarks[4].z).distanceTo(landmarks[8])
+            this.angleLerper.target = Math.atan2(landmarks[17].x - landmarks[0].x, landmarks[17].z - landmarks[0].z)
+            this.powerLerper.target = new THREE.Vector3(landmarks[4].x, landmarks[4].y, landmarks[4].z).distanceTo(landmarks[8])
             console.log("angle: " + this.angle, "power: " + this.power)
             /*const sc = .1
             for (let i = 0; i < 21; i++) {

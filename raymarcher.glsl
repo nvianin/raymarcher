@@ -3,6 +3,7 @@ uniform vec2 u_resolution;
 uniform float u_time;
 uniform float power;
 uniform float angle;
+uniform float pixelRatio;
 
 #define QUARTER_PI 0.78539813397
 #define HALF_PI 1.570796267
@@ -110,7 +111,7 @@ vec3 palette(float t) {
 }
 
 void main() {
-    vec2 uv = (gl_FragCoord.xy - .5 * u_resolution) / u_resolution.y;
+    vec2 uv = (gl_FragCoord.xy - (pixelRatio / 2.) * u_resolution) / u_resolution.y;
     /* vec3 ro = vec3(0., 0., -4.); */
     /* vec3 ro = vec3(sin(u_time * .1) * 3., 0., cos(u_time * .1) * 3.); */
     vec3 ro = vec3(sin(angle) * 3., 0., cos(angle) * 3.);

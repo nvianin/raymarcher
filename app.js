@@ -27,6 +27,9 @@ class App {
                     },
                     angle: {
                         value: 0
+                    },
+                    pixelRatio: {
+                        value: devicePixelRatio
                     }
                 }
             })
@@ -66,9 +69,12 @@ class App {
         requestAnimationFrame(this.render.bind(this))
         this.composer.render();
         this.plane.material.uniforms.u_time.value = this.clock.getElapsedTime()
-        this.handController.update(dt)
-        this.plane.material.uniforms.angle.value = -(this.handController.angle + Math.PI / 1.2) * 2
-        this.plane.material.uniforms.power.value = this.handController.power * 100
+
+        if (this.handController) {
+            this.handController.update(dt)
+            this.plane.material.uniforms.angle.value = -(this.handController.angle + Math.PI / 1.2) * 2
+            this.plane.material.uniforms.power.value = this.handController.power * 100
+        }
     }
 
     setSize() {
@@ -78,6 +84,7 @@ class App {
         this.composer.setPixelRatio(devicePixelRatio)
         this.plane.material.uniforms.u_resolution.value.x = innerWidth
         this.plane.material.uniforms.u_resolution.value.y = innerHeight
+        this.plane.material.uniforms.pixelRatio.value = devicePixelRatio
 
         this.camera.aspect = innerWidth / innerHeight;
         this.camera.updateProjectionMatrix();
