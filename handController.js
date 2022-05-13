@@ -46,11 +46,15 @@ class HandController {
         this.angle = this.targetAngle = -2.1;
         this.power = this.targetPower = 0.17;
 
+        this.angleLerper = new Math.SmoothDamper(this.angle);
+        this.powerLerper = new Math.SmoothDamper(this.power);
+
     }
 
     update(dt) {
-        this.angle -= (this.angle - this.targetAngle) * .1
-        this.power -= (this.power - this.targetPower) * .1
+        this.angle = this.angleLerper.update()
+        this.power = this.powerLerper.update()
+
 
     }
 
