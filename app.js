@@ -63,10 +63,10 @@ class App {
         this.composer.addPass(this.SMAAPass);
 
         this.bloomPass = new THREE.UnrealBloomPass();
-        this.bloomPass.threshold = .2;
-        this.bloomPass.strength = .28;
-        this.bloomPass.radius = .2;
-        /* this.composer.addPass(this.bloomPass) */
+        this.bloomPass.threshold = .15;
+        this.bloomPass.strength = .23;
+        this.bloomPass.radius = 2.8;
+        this.composer.addPass(this.bloomPass)
         this.composer.addPass(new THREE.ShaderPass(THREE.CopyShader))
 
         this.setSize()
@@ -87,9 +87,9 @@ class App {
             this.plane.material.uniforms.angle.value = -(this.handController.angle + 2.2) * 2
             this.plane.material.uniforms.power.value = this.handController.power
 
-            this.plane.material.uniforms.middle_f.value = this.handController.middle * 40;
-            this.plane.material.uniforms.ring_f.value = this.handController.ring * 40;
-            this.plane.material.uniforms.little_f.value = this.handController.little * 40;
+            this.plane.material.uniforms.middle_f.value = (this.handController.middle * 7) * Math.PI * 2;
+            this.plane.material.uniforms.ring_f.value = (this.handController.ring * 7) * Math.PI * 2;
+            this.plane.material.uniforms.little_f.value = (this.handController.little * 7) * Math.PI * 2;
 
             this.plane.material.uniforms.dist.value = 1.5 - this.handController.dist * 2
         }
