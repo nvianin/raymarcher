@@ -7,6 +7,7 @@ class App {
         this.handController = new HandController()
 
         this.renderer = new THREE.WebGLRenderer()
+        /* this.renderer.pixelRatio = .5; */
 
         this.camera = new THREE.PerspectiveCamera(90, innerWidth / innerHeight, .1, 100);
         this.camera.position.z = .2;
@@ -96,13 +97,14 @@ class App {
     }
 
     setSize() {
+        let pixelRatio = devicePixelRatio;
         this.renderer.setSize(innerWidth, innerHeight);
         this.composer.setSize(innerWidth, innerHeight);
-        this.renderer.setPixelRatio(devicePixelRatio)
-        this.composer.setPixelRatio(devicePixelRatio)
+        this.renderer.setPixelRatio(pixelRatio)
+        this.composer.setPixelRatio(pixelRatio)
         this.plane.material.uniforms.u_resolution.value.x = innerWidth
         this.plane.material.uniforms.u_resolution.value.y = innerHeight
-        this.plane.material.uniforms.pixelRatio.value = devicePixelRatio
+        this.plane.material.uniforms.pixelRatio.value = pixelRatio
 
         this.camera.aspect = innerWidth / innerHeight;
         this.camera.updateProjectionMatrix();
